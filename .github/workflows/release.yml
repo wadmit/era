@@ -1,13 +1,18 @@
-name: Build and Release Go Project
+name: Build and Release Go Project for Multiple OS
 
 on:
   push:
     tags:
-      - 'v*.*.*' 
+      - 'v*.*.*'  # Trigger only on version tags (e.g., v1.0.0)
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        goos: [linux, darwin, windows]  # Build for Linux, macOS (darwin), and Windows
+        goarch: [amd64]  # You can add more architectures like arm64 if needed
 
     steps:
     - name: Checkout repository
@@ -16,13 +21,21 @@ jobs:
     - name: Set up Go environment
       uses: actions/setup-go@v4
       with:
-        go-version: '1.22.5' 
+        go-version: '1.20'  # Set to your Go version
 
     - name: Build the project
-      run: go build -o era # Build your Go project (adjust as necessary)
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+      run: go build -o era-${{ matrix.goos }}-${{ matrix.goarch }}  # Build the binary for each OS and architecture
 
-    - name: Archive build files
-      run: zip -r build.zip ./era  # Archive the binary (adjust if needed)
+    - name: Archive build files (Linux/macOS)
+      if: ${{ matrix.goos != 'windows' }}  # Only for non-Windows systems
+      run: tar -czvf era-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz ./era-${{ matrix.goos }}-${{ matrix.goarch }}
+
+    - name: Archive build files (Windows)
+      if: ${{ matrix.goos == 'windows' }}  # Only for Windows
+      run: zip era-${{ matrix.goos }}-${{ matrix.goarch }}.zip ./era-${{ matrix.goos }}-${{ matrix.goarch }}
 
     - name: Create GitHub Release
       id: create_release
@@ -35,12 +48,24 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload Build Artifact to Release
+    - name: Upload Linux/macOS Asset to Release
+      if: ${{ matrix.goos != 'windows' }}  # Only for non-Windows systems
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build.zip
-        asset_name: build.zip
+        asset_path: ./era-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
+        asset_name: era-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
+        asset_content_type: application/gzip
+
+    - name: Upload Windows Asset to Release
+      if: ${{ matrix.goos == 'windows' }}  # Only for Windows
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./era-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+        asset_name: era-${{ matrix.goos }}-${{ matrix.goarch }}.zip
         asset_content_type: application/zip

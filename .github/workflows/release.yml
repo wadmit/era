@@ -2,44 +2,32 @@ name: Build and Release
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - master
+    # tags:
+    #   - 'v*.*.*'
 
 jobs:
   build:
-    name: Build and release binaries
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # Set up Go
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.22.5'
 
-      # Build for macOS
-      - name: Build for macOS
-        run: GOOS=darwin GOARCH=amd64 go build -o build/myapp_macOS_${{ github.ref_name }}
+      - name: Build and package
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
 
-      # Build for Ubuntu
-      - name: Build for Linux
-        run: GOOS=linux GOARCH=amd64 go build -o build/myapp_linux_${{ github.ref_name }}
-
-      # Build for Windows
-      - name: Build for Windows
-        run: GOOS=windows GOARCH=amd64 go build -o build/myapp_windows_${{ github.ref_name }}.exe
-
-      # Create GitHub release
-      - name: Create GitHub release
+      - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            build/myapp_macOS_${{ github.ref_name }}
-            build/myapp_linux_${{ github.ref_name }}
-            build/myapp_windows_${{ github.ref_name }}.exe
+          files: build/*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

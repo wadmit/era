@@ -1,10 +1,14 @@
 package base
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/wadmit/era/internal/parser"
 	"github.com/wadmit/era/internal/parser/rules"
 	"github.com/wadmit/era/internal/transform"
 	"github.com/wadmit/era/internal/types"
+	"github.com/wadmit/era/internal/utils"
 )
 
 // DetectAndChangeFile processes files, modifies their content, and then writes it back or handles it as needed.
@@ -23,9 +27,14 @@ func DetectAndChangeFile(root string, cfg *types.Config, configMap *rules.Config
 		close(resultChan)
 	}()
 
-	// // Process each transformed file
+	jsonFilePath, err := utils.CreateReportPath(cfg.ReportPath)
+	if err != nil {
+		fmt.Print("Error: Unable to create report path")
+		os.Exit(1)
+		return
+
+	}
 	for transformed := range resultChan {
-		// fmt.Print(transformed.ContentLines)
-		parser.ParseAndWrite(transformed, configMap)
+		parser.ParseAndWrite(transformed, configMap, jsonFilePath)
 	}
 }

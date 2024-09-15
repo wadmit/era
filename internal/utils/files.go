@@ -1,10 +1,13 @@
 package utils
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/wadmit/era/internal/types"
 )
@@ -89,4 +92,28 @@ func FileWalker(root string, fileChan chan<- string, config *types.Config) {
 
 func GetFileExt(filePath string) string {
 	return filepath.Ext(filePath)
+}
+
+func CreateReportPath(reportDir string) (string, error) {
+	// Ensure the directory exists, or create it
+	if _, err := os.Stat(reportDir); os.IsNotExist(err) {
+		if err := os.MkdirAll(reportDir, 0755); err != nil {
+			return "", fmt.Errorf("error creating directory: %v", err)
+		}
+	}
+
+	// Generate 16 random bytes for uniqueness
+	randBytes := make([]byte, 16)
+	if _, err := rand.Read(randBytes); err != nil {
+		return "", fmt.Errorf("error generating random bytes: %v", err)
+	}
+
+	// Combine timestamp and random bytes for uniqueness
+	timestamp := time.Now().Format("20060102-150405")
+	uniqueID := hex.EncodeToString(randBytes)
+	jsonFileName := fmt.Sprintf("report-%s-%s.json", timestamp, uniqueID)
+
+	// Create the full path for the JSON report
+	jsonFilePath := filepath.Join(reportDir, jsonFileName)
+	return jsonFilePath, nil
 }

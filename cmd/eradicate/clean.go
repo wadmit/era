@@ -15,14 +15,10 @@ var CleanCommand = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.LoadConfig()
 		if err != nil {
-			fmt.Println("Error loading config file")
+			fmt.Println("Error: Loading config file")
 			panic(err)
 		}
 		fmt.Print("Cleaning files\n", cfg)
-		// root := cmd.Flag("root").Value.String()
-		// if root == "" {
-		// 	root = cfg.Root
-		// }
 		configMap := rules.LoadRules(cfg)
 		base.DetectAndChangeFile(cfg.Root, cfg, configMap)
 	},

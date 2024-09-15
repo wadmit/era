@@ -11,6 +11,7 @@ import (
 	"github.com/wadmit/era/internal/parser/rules"
 	"github.com/wadmit/era/internal/transform"
 	"github.com/wadmit/era/internal/types"
+	"github.com/wadmit/era/internal/utils"
 )
 
 var RemoveCommand = &cobra.Command{
@@ -36,10 +37,11 @@ var RemoveCommand = &cobra.Command{
 
 		configMap := rules.LoadRules(cfg)
 
-		// handle multiple files flag
+		// handle multiple files flag removal
 		for _, file := range fileFlag {
 			handleFileRemoval(file, cfg, configMap)
 		}
+
 		// Handle directory removal
 		if dirFlag != "" {
 			handleDirectoryRemoval(dirFlag, cfg, configMap)
@@ -70,11 +72,18 @@ func handleFileRemoval(file string, cfg *types.Config, configMap *rules.ConfigMa
 
 	transformedFile, err := transform.TransformFile(filePath)
 	if err != nil {
-		fmt.Println("Error reading file as if file path is invalid or path is directory", err)
+		fmt.Println("Error: Reading file as if file path is invalid or path is directory")
 		return
 	}
 
-	parser.ParseAndWrite(transformedFile, configMap)
+	jsonFilePath, err := utils.CreateReportPath(cfg.Root)
+	if err != nil {
+		fmt.Println("Error: Unable to create report path")
+		os.Exit(1)
+		return
+	}
+
+	parser.ParseAndWrite(transformedFile, configMap, jsonFilePath)
 }
 
 // Handle directory removal logic

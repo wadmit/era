@@ -1,0 +1,7 @@
+root: .
+reportPath: .
+IgnoreKeyword: ["erd:ignore","erd:ignoreAll"]
+FileExtensions: [".go",".py",".js",".ts",".jsx",".tsx",".java",".rb",".php",".cs",".cpp",".c",".h",".hpp",".swift",".kt",".kt",".clj",".cljs",".groovy",".scala",".pl",".pm",".t",".r",".sh",".bash",".zsh",".fish",".ps1",".bat",".cmd",".vbs",".vba",".vbe",".js",".ts",".jsx",".tsx",".html",".css",".scss",".sass",".less"]
+IgnoreDir: ["node_modules","vendor",".git",".idea",".vscode",".vs",".hg",".svn",".bzr",".fslckout","_darcs","_sgbak",".bzr",".bzrignore",".bzrtags",".bzrcheckout",".bzrcommit",".bzrpush"]
+IgnoreFiles: []
+ListenTypes: "command"

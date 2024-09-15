@@ -6,8 +6,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
-	"github.com/wadmit/eradicate/internal/types"
-	"github.com/wadmit/eradicate/internal/utils"
+	"github.com/wadmit/era/internal/types"
+	"github.com/wadmit/era/internal/utils"
 )
 
 const (

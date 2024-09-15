@@ -1,9 +1,9 @@
 package transform
 
 import (
-	"github.com/wadmit/eradicate/internal/fileio"
-	"github.com/wadmit/eradicate/internal/types"
-	"github.com/wadmit/eradicate/internal/utils"
+	"github.com/wadmit/era/internal/fileio"
+	"github.com/wadmit/era/internal/types"
+	"github.com/wadmit/era/internal/utils"
 )
 
 // Transformer defines the methods for transforming files.

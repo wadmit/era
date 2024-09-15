@@ -1,9 +1,9 @@
 .PHONY: test test-cover test-internal format build clean
-PKG=github.com/wadmit/eradicate
+PKG=github.com/wadmit/era
 TEST_DIR=./tests
 TEST_INTERNAL = ./internal/...
 VERSION := `git fetch --tags && git tag | sort -V | tail -1`
-LDFLAGS=-ldflags "-X=github.com/wadmit/eradicate/v0/cmd.Version=$(VERSION)"
+LDFLAGS=-ldflags "-X=github.com/wadmit/era/v0/cmd.Version=$(VERSION)"
 COVER=--cover --coverprofile=cover.out
 
 format:

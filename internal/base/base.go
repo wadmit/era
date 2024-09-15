@@ -1,10 +1,10 @@
 package base
 
 import (
-	"github.com/wadmit/eradicate/internal/parser"
-	"github.com/wadmit/eradicate/internal/parser/rules"
-	"github.com/wadmit/eradicate/internal/transform"
-	"github.com/wadmit/eradicate/internal/types"
+	"github.com/wadmit/era/internal/parser"
+	"github.com/wadmit/era/internal/parser/rules"
+	"github.com/wadmit/era/internal/transform"
+	"github.com/wadmit/era/internal/types"
 )
 
 // DetectAndChangeFile processes files, modifies their content, and then writes it back or handles it as needed.

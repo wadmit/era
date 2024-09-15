@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/wadmit/eradicate/internal/base"
-	"github.com/wadmit/eradicate/internal/config"
-	"github.com/wadmit/eradicate/internal/parser/rules"
+	"github.com/wadmit/era/internal/base"
+	"github.com/wadmit/era/internal/config"
+	"github.com/wadmit/era/internal/parser/rules"
 )
 
 var CleanCommand = &cobra.Command{

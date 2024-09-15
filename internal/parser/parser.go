@@ -6,9 +6,9 @@ import (
 	"sync"
 
 	"github.com/dlclark/regexp2"
-	"github.com/wadmit/eradicate/internal/fileio"
-	"github.com/wadmit/eradicate/internal/parser/rules"
-	"github.com/wadmit/eradicate/internal/transform"
+	"github.com/wadmit/era/internal/fileio"
+	"github.com/wadmit/era/internal/parser/rules"
+	"github.com/wadmit/era/internal/transform"
 )
 
 type Parser interface {

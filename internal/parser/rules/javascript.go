@@ -1,7 +1,7 @@
 package rules
 
 import (
-	"github.com/wadmit/eradicate/internal/types"
+	"github.com/wadmit/era/internal/types"
 )
 
 func JavaScriptConfig(cfg *types.Config) *Rule {

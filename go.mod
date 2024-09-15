@@ -1,4 +1,4 @@
-module github.com/wadmit/eradicate
+module github.com/wadmit/era
 
 go 1.22.5
 

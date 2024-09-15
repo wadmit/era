@@ -5,12 +5,12 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/wadmit/eradicate/internal/base"
-	"github.com/wadmit/eradicate/internal/config"
-	"github.com/wadmit/eradicate/internal/parser"
-	"github.com/wadmit/eradicate/internal/parser/rules"
-	"github.com/wadmit/eradicate/internal/transform"
-	"github.com/wadmit/eradicate/internal/types"
+	"github.com/wadmit/era/internal/base"
+	"github.com/wadmit/era/internal/config"
+	"github.com/wadmit/era/internal/parser"
+	"github.com/wadmit/era/internal/parser/rules"
+	"github.com/wadmit/era/internal/transform"
+	"github.com/wadmit/era/internal/types"
 )
 
 var RemoveCommand = &cobra.Command{
@@ -83,13 +83,11 @@ func handleDirectoryRemoval(dir string, cfg *types.Config, configMap *rules.Conf
 		fmt.Println("Error: Directory does not exist")
 		return
 	}
-
 	// Check if the directory is in the ignore list
 	if rules.Contains(cfg.IgnoreDirs, dir) {
 		fmt.Println("Error: Directory is in ignore list")
 		return
 	}
-
 	base.DetectAndChangeFile(dir, cfg, configMap)
 }
 

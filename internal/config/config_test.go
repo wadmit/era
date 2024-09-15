@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
-	"github.com/wadmit/eradicate/internal/utils"
+	"github.com/wadmit/era/internal/utils"
 )
 
 func TestLoadConfig(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/dlclark/regexp2"
-	"github.com/wadmit/eradicate/internal/types"
+	"github.com/wadmit/era/internal/types"
 )
 
 type Rule struct {
@@ -22,6 +22,10 @@ func LoadRules(cfg *types.Config) *ConfigMap {
 	configMap := ConfigMap{
 		"javascript": JavaScriptConfig(cfg),
 		"golang":     GoLangConfig(cfg),
+		"python":     PythonConfig(cfg),
+		"java":       JavaConfig(cfg),
+		"ruby":       RubyConfig(cfg),
+		"php":        PhpConfig(cfg),
 	}
 	return &configMap
 }
@@ -51,7 +55,6 @@ func GenerateCombinedRegex(ignoreKeywords []string, outputRegexPatterns []string
 		pattern := ignorePattern + ".*" + outputPattern
 		combinedPatterns[i] = regexp2.MustCompile(pattern, regexp2.RE2)
 	}
-
 	return combinedPatterns
 }
 

@@ -1,6 +1,6 @@
 package config
 
-import "github.com/wadmit/eradicate/internal/types"
+import "github.com/wadmit/era/internal/types"
 
 func GenerateErdConfig() *types.Config {
 	return &types.Config{

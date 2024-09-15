@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/wadmit/eradicate/internal/types"
+	"github.com/wadmit/era/internal/types"
 )
 
 // FileWalker walks through every folder and file in the given directory, sending file paths

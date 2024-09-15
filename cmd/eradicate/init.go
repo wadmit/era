@@ -2,7 +2,7 @@ package eradicate
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/wadmit/eradicate/internal/config"
+	"github.com/wadmit/era/internal/config"
 )
 
 var InitCommand = &cobra.Command{

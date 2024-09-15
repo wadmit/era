@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/wadmit/eradicate/internal/types"
+	"github.com/wadmit/era/internal/types"
 )
 
 func TestFileWalker(t *testing.T) {

@@ -3,8 +3,8 @@ package base
 import (
 	"testing"
 
-	"github.com/wadmit/eradicate/internal/config"
-	"github.com/wadmit/eradicate/internal/parser/rules"
+	"github.com/wadmit/era/internal/config"
+	"github.com/wadmit/era/internal/parser/rules"
 )
 
 func TestBaseTest(t *testing.T) {

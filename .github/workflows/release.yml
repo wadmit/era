@@ -19,10 +19,10 @@ jobs:
         go-version: '1.22.5' 
 
     - name: Build the project
-      run: go build -o myapp # Build your Go project (adjust as necessary)
+      run: go build -o era # Build your Go project (adjust as necessary)
 
     - name: Archive build files
-      run: zip -r build.zip ./myapp  # Archive the binary (adjust if needed)
+      run: zip -r build.zip ./era  # Archive the binary (adjust if needed)
 
     - name: Create GitHub Release
       id: create_release

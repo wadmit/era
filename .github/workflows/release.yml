@@ -29,13 +29,13 @@ jobs:
         GOARCH: ${{ matrix.goarch }}
       run: go build -o era-${{ matrix.goos }}-${{ matrix.goarch }}  # Build the binary for each OS and architecture
 
-    # - name: Archive build files (Linux/macOS)
-    #   if: ${{ matrix.goos != 'windows' }}  # Only for non-Windows systems
-    #   run: tar -czvf era-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz ./era-${{ matrix.goos }}-${{ matrix.goarch }}
+    - name: Archive build files (Linux/macOS)
+      if: ${{ matrix.goos != 'windows' }}  # Only for non-Windows systems
+      run: tar -czvf era-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz era-${{ matrix.goos }}-${{ matrix.goarch }}
 
     - name: Archive build files (Windows)
       if: ${{ matrix.goos == 'windows' }}  # Only for Windows
-      run: zip era-${{ matrix.goos }}-${{ matrix.goarch }}.zip ./era-${{ matrix.goos }}-${{ matrix.goarch }}
+      run: zip -r era-${{ matrix.goos }}-${{ matrix.goarch }}.zip era-${{ matrix.goos }}-${{ matrix.goarch }}
 
     - name: Create GitHub Release
       id: create_release

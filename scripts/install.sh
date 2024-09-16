@@ -61,7 +61,7 @@ install_binary() {
   echo "Verifying and installing..."
   if [ "$os" = "windows" ]; then
     # For Windows, extract using PowerShell
-    powershell -Command "Expand-Archive -Path build/$file_name -DestinationPath ."
+    powershell -Command "Expand-Archive -Path $file_name -DestinationPath ."
     mv "$extracted_file_name" "$binary_path"
   else
     # For Linux and macOS

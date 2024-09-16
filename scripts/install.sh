@@ -41,7 +41,7 @@ install_binary() {
       extracted_file_name="era_macOS_v${release_version}"
       ;;
     windows)
-      file_name="era_windows_v${release_version}.tar.gz"
+      file_name="era_windows_v${release_version}.zip"
       binary_path="$USERPROFILE\\era.exe"
       extracted_file_name="era_windows_v${release_version}.exe"
       ;;

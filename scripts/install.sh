@@ -42,7 +42,7 @@ install_binary() {
       ;;
     windows)
       file_name="era_windows_v${release_version}.zip"
-      binary_path="$USERPROFILE\\era.exe"
+      binary_path="$USERPROFILE\\AppData\\Local\\era\\era.exe"
       extracted_file_name="era_windows_v${release_version}.exe"
       ;;
     *)
@@ -61,8 +61,12 @@ install_binary() {
   echo "Verifying and installing..."
   if [ "$os" = "windows" ]; then
     # For Windows, extract using PowerShell
-    powershell -Command "Expand-Archive -Path $file_name -DestinationPath ."
-    mv "$extracted_file_name" "$binary_path"
+    powershell -Command "Expand-Archive -Path $file_name -DestinationPath $USERPROFILE\\AppData\\Local\\era"
+    mv "$USERPROFILE\\AppData\\Local\\era\\$extracted_file_name" "$binary_path"
+
+    # Update PATH environment variable
+    echo "Updating PATH environment variable..."
+    powershell -Command "[System.Environment]::SetEnvironmentVariable('PATH', '$env:PATH;$USERPROFILE\\AppData\\Local\\era', [System.EnvironmentVariableTarget]::User)"
   else
     # For Linux and macOS
     if file "$file_name" | grep -q "gzip compressed data"; then
@@ -81,6 +85,6 @@ install_binary() {
   echo "ERA version $release_version installed successfully."
 }
 
-# Main script execution for os
+# Main script execution for OS
 os=$(detect_os)
 install_binary "$os"

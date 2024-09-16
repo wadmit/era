@@ -76,7 +76,7 @@ func handleFileRemoval(file string, cfg *types.Config, configMap *rules.ConfigMa
 		return
 	}
 
-	jsonFilePath, err := utils.CreateReportPath(cfg.Root)
+	jsonFilePath, err := utils.CreateReportPath(cfg.ReportPath)
 	if err != nil {
 		fmt.Println("Error: Unable to create report path")
 		os.Exit(1)

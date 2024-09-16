@@ -2,10 +2,10 @@
 
 Ever find yourself cringing when a debugging or test command sneaks its way into your production code? 😱 Don’t worry, ERA's got your back!
 
-Imagine ERA as your digital "magic wand" 🪄 for code cleanup. It’s like having a superpower that sweeps through your codebase, banishing those pesky command lines that slipped through the cracks and ensuring your production environment remains pristine. 🚀
+Imagine ERA as your digital "magic wand" 🪄 for code cleanup. It’s like having a superpower that sweeps through your codebase, banishing those pesky output command that slipped through the cracks and ensuring your production environment remains pristine. 🚀
 
 ## 🛠️ **How It Works:**
-Just run ERA, and watch it work its magic! It’ll zap away any unwanted command lines from your output, leaving your code cleaner than ever. 🌟
+Just run ERA, and watch it work its magic! It’ll zap away any unwanted output command from your code , leaving your codebase cleaner than ever. 🌟
 
 ## 🚀 **Why ERA Rocks:**
 - **Instant Cleanup:** ERA swiftly removes those unintended commands with a flick of your wrist (or a click of your mouse).

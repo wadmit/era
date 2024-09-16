@@ -81,6 +81,6 @@ install_binary() {
   echo "ERA version $release_version installed successfully."
 }
 
-# Main script execution
+# Main script execution for os
 os=$(detect_os)
 install_binary "$os"

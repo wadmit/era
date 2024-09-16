@@ -12,11 +12,18 @@ detect_os() {
   esac
 }
 
+# Function to get the latest release version
+get_latest_version() {
+  curl --silent "https://api.github.com/repos/wadmit/era/releases/latest" | 
+  grep '"tag_name":' |
+  sed -E 's/.*"([^"]+)".*/\1/' |
+  sed 's/v//'
+}
+
 # Function to download and install the binary
 install_binary() {
   local os=$1
-  local release_version="1.0.0"
-  local file_version="1.0.0"
+  local release_version=$(get_latest_version)
   local file_name
   local download_url
   local binary_path
@@ -24,28 +31,27 @@ install_binary() {
 
   case "$os" in
     linux)
-      file_name="era_linux_v${file_version}.tar.gz"
-      download_url="https://github.com/wadmit/era/releases/download/v${release_version}/${file_name}"
+      file_name="era_linux_v${release_version}.tar.gz"
       binary_path="/usr/local/bin/era"
-      extracted_file_name="era_linux_v${file_version}"
+      extracted_file_name="era_linux_v${release_version}"
       ;;
     macOS)
-      file_name="era_macOS_v${file_version}.tar.gz"
-      download_url="https://github.com/wadmit/era/releases/download/v${release_version}/${file_name}"
+      file_name="era_macOS_v${release_version}.tar.gz"
       binary_path="/usr/local/bin/era"
-      extracted_file_name="era_macOS_v${file_version}"
+      extracted_file_name="era_macOS_v${release_version}"
       ;;
     windows)
-      file_name="era_windows_v${file_version}.tar.gz"
-      download_url="https://github.com/wadmit/era/releases/download/v${release_version}/${file_name}"
+      file_name="era_windows_v${release_version}.tar.gz"
       binary_path="$USERPROFILE\\era.exe"
-      extracted_file_name="era_windows_v${file_version}.exe"
+      extracted_file_name="era_windows_v${release_version}.exe"
       ;;
     *)
       echo "Unsupported OS"
       exit 1
       ;;
   esac
+
+  download_url="https://github.com/wadmit/era/releases/download/v${release_version}/${file_name}"
 
   # Download the binary
   echo "Downloading $file_name from $download_url..."
@@ -60,9 +66,9 @@ install_binary() {
   else
     # For Linux and macOS
     if file "$file_name" | grep -q "gzip compressed data"; then
-      gunzip -c "$file_name" | tar x
+      tar -xzf "$file_name"
       chmod +x "$extracted_file_name"
-      mv "$extracted_file_name" "$binary_path"
+      sudo mv "$extracted_file_name" "$binary_path"
     else
       echo "Error: The downloaded file is not in gzip format."
       exit 1
@@ -72,7 +78,7 @@ install_binary() {
   # Clean up
   rm "$file_name"
 
-  echo "Installation completed successfully."
+  echo "ERA version $release_version installed successfully."
 }
 
 # Main script execution

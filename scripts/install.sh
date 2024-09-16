@@ -62,7 +62,7 @@ install_binary() {
   if [ "$os" = "windows" ]; then
     # For Windows, extract using PowerShell
     powershell -Command "Expand-Archive -Path $file_name -DestinationPath $USERPROFILE\\AppData\\Local\\era"
-    mv "$USERPROFILE\\AppData\\Local\\era\\$extracted_file_name" "$binary_path"
+    mv "$USERPROFILE\\AppData\\Local\\era\\build\\$extracted_file_name" "$binary_path"
 
     # Update PATH environment variable
     echo "Updating PATH environment variable..."

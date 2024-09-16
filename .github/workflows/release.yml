@@ -29,7 +29,7 @@ jobs:
         GOARCH: ${{ matrix.goarch }}
       run: go build -o era-${{ matrix.goos }}-${{ matrix.goarch }}  # Build the binary for each OS and architecture
 
-    - name: Archive build files (Linux/macOS)
+    - name: Archive build files (Linux/macOS)c
       if: ${{ matrix.goos != 'windows' }}  # Only for non-Windows systems
       run: tar -czvf era-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz era-${{ matrix.goos }}-${{ matrix.goarch }}
 

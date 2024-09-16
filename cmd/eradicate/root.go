@@ -14,10 +14,10 @@ import (
 var asciiArt = figure.NewFigure("Eradicate", "", true).String()
 
 var rootCmd = &cobra.Command{
-	Use:   "erd",
-	Short: "Eradicate(erd) is a magic trick that does magic",
+	Use:   "era",
+	Short: "Eradicate(era) is a magic trick that does magic",
 	Long: asciiArt + `
-Eradicate (erd) is a powerful tool for cleaning and transforming your files with ease.
+Eradicate (era) is a powerful tool for cleaning and transforming your files with ease.
 It comes with built-in commands to initialize configurations and clean files based on custom rules.
 `,
 	Run: func(cmd *cobra.Command, args []string) {

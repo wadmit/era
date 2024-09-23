@@ -1,0 +1,13 @@
+[
+  {
+    "filename": ".//examples/languages/javascript/index.js",
+    "matched_lines": [
+      {
+        "line_index": 2,
+        "content": "console.log(\"hello\");",
+        "start_index": 0,
+        "end_index": 21
+      }
+    ]
+  }
+]

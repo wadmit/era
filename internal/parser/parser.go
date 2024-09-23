@@ -2,7 +2,6 @@ package parser
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -21,76 +20,72 @@ type Report struct {
 
 // MatchInfo holds the information about each matched line
 type MatchInfo struct {
-	LineIndex int    `json:"line_index"`
-	Content   string `json:"content"`
+	LineIndex  int    `json:"line_index"`
+	Content    string `json:"content"`
+	StartIndex int    `json:"start_index"`
+	EndIndex   int    `json:"end_index"`
 }
 
 func ParseAndWrite(transformed transform.Transform, configMap *rules.ConfigMap, reportPath string) {
-	// Generate rules for the given extension
 	rule := rules.GenerateRulesForExtensions(transformed.Extension, configMap)
 	if rule == nil {
 		log.Printf("No rules found for extension: %s", transformed.Extension)
 		return
 	}
 
-	// Pre-allocate filtered lines with the size of the content lines
-	filteredLines := make([]string, len(transformed.ContentLines))
-
-	// Buffered channel to collect results for matched lines
+	// Use separate filtering and matching logic
 	reportChan := make(chan Report, len(transformed.ContentLines))
-
-	// Wait group for synchronizing goroutines
 	var wg sync.WaitGroup
 
-	// Process each line concurrently
 	for i, line := range transformed.ContentLines {
 		wg.Add(1)
 		go func(i int, line string) {
 			defer wg.Done()
 
-			// Check if the line matches any of the rules
-			var matchedLines []MatchInfo
+			// First, check if the line should be ignored
+			if rules.ShouldIgnoreLine(line, rule.IgnoreRegex) {
+				return
+			}
+
+			var matchInfos []MatchInfo
+			// Now apply each regex to the line
 			for _, reg := range rule.Regex {
-				match, _ := reg.MatchString(line)
-				if match {
-					matchedLines = append(matchedLines, MatchInfo{
-						LineIndex: i,
-						Content:   line,
+				matches := reg.FindAllStringIndex(line, -1)
+				for _, match := range matches {
+					matchInfos = append(matchInfos, MatchInfo{
+						LineIndex:  i,
+						Content:    line[match[0]:match[1]],
+						StartIndex: match[0],
+						EndIndex:   match[1],
 					})
-					break // Exit early if a match is found
 				}
 			}
 
-			// If matched, send the result to the report channel
-			if len(matchedLines) > 0 {
+			if len(matchInfos) > 0 {
 				reportChan <- Report{
 					FileName:     transformed.FilePath,
-					MatchedLines: matchedLines,
+					MatchedLines: matchInfos,
 				}
-			} else {
-				// Preserve the order of filtered lines
-				filteredLines[i] = line
 			}
 		}(i, line)
 	}
 
-	// Close the report channel once all processing is done
 	go func() {
 		wg.Wait()
 		close(reportChan)
 	}()
 
-	// Collect results from the report channel
 	var reports []Report
 	for report := range reportChan {
 		reports = append(reports, report)
 	}
 
-	// Remove empty strings from the filtered lines
-	finalLines := make([]string, 0, len(filteredLines))
-	for _, line := range filteredLines {
-		if line != "" {
-			finalLines = append(finalLines, line)
+	// Remove matched substrings from the content
+	finalLines := make([]string, len(transformed.ContentLines))
+	copy(finalLines, transformed.ContentLines)
+	for _, report := range reports {
+		for _, matchInfo := range report.MatchedLines {
+			finalLines[matchInfo.LineIndex] = finalLines[matchInfo.LineIndex][:matchInfo.StartIndex] + finalLines[matchInfo.LineIndex][matchInfo.EndIndex:]
 		}
 	}
 
@@ -112,7 +107,7 @@ func ParseAndWrite(transformed transform.Transform, configMap *rules.ConfigMap, 
 	// Check if the file exists
 	if _, err := os.Stat(reportPath); err == nil {
 		// File exists, read the current content
-		data, err := ioutil.ReadFile(reportPath)
+		data, err := os.ReadFile(reportPath)
 		if err != nil {
 			log.Printf("Error reading report file: %v", err)
 			return

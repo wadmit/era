@@ -161,6 +161,11 @@ The configuration is structured as follows:
 - **ReportPath**: Indicates the directory where the reports will be stored. By default, it is set to `"era-reports"`. After cleaning or processing files, the reports detailing the changes made will be saved in this location.
 
 - **IgnoreKeyword**: An array of keywords that, if found in the code, will instruct Eradicate to ignore the associated lines or sections. By default, it includes `["erd:ignore", "erd:ignoreAll"]`. You can customize this list to add any keywords relevant to your project that you want to ignore.
+  Example
+  ```python
+  print("hello world") #erd:ignore
+  ```
+  Above code will ignore that print statement from being removed.It will go similar with other languages like Javascript, Java, Ruby,Php etc.
 
 - **IgnoreFileExtensions**: A list of file extensions that Eradicate will skip during the cleaning process. This is useful for excluding binary files or archives that should not be processed. The default extensions are:
   - `.exe`
